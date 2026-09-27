@@ -61,7 +61,8 @@ resource "docker_image" "app" {
 
   build {
     context    = "${path.module}/../.."
-    dockerfile = "Dockerfile"
+    dockerfile = "${path.module}/../../Dockerfile"
+    builder    = "default"
     platform   = "linux/amd64"
     no_cache   = true
   }
@@ -75,7 +76,7 @@ resource "docker_image" "app" {
 # Push Docker image to Artifact Registry
 resource "docker_registry_image" "app" {
   name = docker_image.app.name
-  
+
   depends_on = [
     google_artifact_registry_repository.app,
     docker_image.app
